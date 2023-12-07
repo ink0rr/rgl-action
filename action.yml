@@ -1,0 +1,54 @@
+name: "rgl-action"
+description: "Fast and minimal implementation of Regolith."
+inputs:
+  version:
+    description: "rgl version to use"
+    default: "latest"
+    required: false
+  profile:
+    description: "Profile to run"
+    default: "default"
+    required: false
+  github_token:
+    description: "GitHub Token for getting private filters"
+    default: ""
+    required: false
+
+runs:
+  using: "composite"
+  steps:
+    - uses: de-vri-es/setup-git-credentials@v2.0.10
+      if: ${{ inputs.github_token != '' }}
+      with:
+        credentials: https://user:${{ inputs.github_token }}@github.com/
+    - uses: denoland/setup-deno@v1
+      with:
+        deno-version: vx.x.x
+    - uses: actions/setup-go@v4
+      with:
+        go-version: stable
+    - name: list versions
+      shell: bash
+      run: |
+        python --version
+        node -v
+        deno --version
+        go version
+    - name: rgl
+      shell: bash
+      run: |
+        version=${{ inputs.version }}
+        if [ "$version" = "latest" ]; then
+          curl -fsSL https://raw.githubusercontent.com/ink0rr/rgl/main/scripts/install.sh | sh
+        else
+          curl -fsSL https://raw.githubusercontent.com/ink0rr/rgl/main/scripts/install.sh | sh -s -- $version
+        fi
+        mv $HOME/.rgl/bin/rgl /usr/local/bin/rgl
+        chmod +x /usr/local/bin/rgl
+        rgl --version
+    - name: install
+      shell: bash
+      run: rgl install
+    - name: run
+      shell: bash
+      run: rgl run ${{ inputs.profile }}
