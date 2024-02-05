@@ -46,9 +46,9 @@ runs:
         mv $HOME/.rgl/bin/rgl /usr/local/bin/rgl
         chmod +x /usr/local/bin/rgl
         rgl --version
-    - name: install
+    - name: get filters
       shell: bash
-      run: rgl install
+      run: rgl get
     - name: run
       shell: bash
       run: rgl run ${{ inputs.profile }}
