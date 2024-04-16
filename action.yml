@@ -21,6 +21,7 @@ runs:
       if: ${{ inputs.github_token != '' }}
       with:
         credentials: https://user:${{ inputs.github_token }}@github.com/
+    - uses: oven-sh/setup-bun@v1
     - uses: denoland/setup-deno@v1
       with:
         deno-version: vx.x.x
@@ -30,6 +31,7 @@ runs:
     - name: list versions
       shell: bash
       run: |
+        bun -v
         python --version
         node -v
         deno --version
