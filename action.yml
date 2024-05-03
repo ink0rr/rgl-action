@@ -17,7 +17,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - uses: de-vri-es/setup-git-credentials@v2.0.10
+    - uses: de-vri-es/setup-git-credentials@v2.1.2
       if: ${{ inputs.github_token != '' }}
       with:
         credentials: https://user:${{ inputs.github_token }}@github.com/
@@ -25,7 +25,7 @@ runs:
     - uses: denoland/setup-deno@v1
       with:
         deno-version: vx.x.x
-    - uses: actions/setup-go@v4
+    - uses: actions/setup-go@v5
       with:
         go-version: stable
     - name: list versions
